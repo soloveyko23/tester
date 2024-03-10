@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Gulp with TailwindCSS v3</title>
+  <link rel="stylesheet" type="text/css" href="./css/style.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
+  <style id="check-color-style"></style>
+</head>
+
+<body>
+  <div class="wrapper overflow-hidden">
+    <header class="header fixed top-0 l-0 w-full z-50 py-5">
+      <div class="header__container container mx-auto px-4">
+        <div class="flex items-center gap-4 justify-between flex-wrap">
+          <div class="flex items-center gap-12">
+            <a href="#" class="header__logo dark:text-dark-white text-light-black">
+              <div class="light">
+                <img src="https://mnstrd.co/common/assets/img/logo-light-mansa.trade.svg" alt="Logo">
+
+              </div>
+              <div class="dark">
+                <img src="https://mnstrd.co/common/assets/img/logo-mansa.trade.svg" alt="Logo">
+
+              </div>
+              <span>STAKING</span>
+            </a>
+            <div class="header__menu menu">
+              <nav class="flex justify-center items-center lg:flex-row flex-col lg:h-auto h-full">
+                <ul
+                  class="flex items-center flex-wrap lg:gap-x-8 lg:gap-y-4 gap-y-7 lg:flex-row flex-col list-none pl-0">
+                  <li>
+                    <a href="#" class="menu__link" data-goto=".tariffs">
+                      <Trans>Тарифы</Trans>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" class="menu__link" data-goto=".calculator">
+                      <Trans>Калькулятор</Trans>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" class="menu__link" data-goto=".why-us">
+                      <Trans>Преимущество</Trans>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" class="menu__link" data-goto=".faq">
+                      <Trans>FAQ</Trans>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="header__actions flex items-center gap-4 md:justify-end md:flex-1 relative z-[5]"
+              data-da=".header__menu, 767.98, last">
+              <div class="language px-2 py-4"><button
+                  class="language-button _icon-globe dark:text-dark-white text-light-black inline-flex items-center text-md font-medium gap-3 tracking-tight leading-tight text-center transition-all">EN</button>
+              </div>
+              <input id="themeSwitcher" class="ThemeToggle toggler" type="checkbox">
+              <!-- <div class="checkbox">
+                <input type="checkbox" class="check-color" id="apply-color-checkbox">
+              </div> -->
+              <button class="button button-main button-connect min-w-40" data-ripple="" style="flex: initial;"><span
+                  class="circle"></span><span class="button__text _icon-wallet">Connect wallet</span></button>
+            </div>
+
+
+            <button type="button" class="ml-5 button-settings-theme dark:text-dark-white text-light-black">
+              <i class="bi bi-gear-fill"></i>
+            </button>
+            <button type="button" class="menu__icon icon-menu ml-3"><span></span></button>
+          </div>
+
+        </div>
+      </div>
+    
+    </header>
+    <div class="language-list fixed transition-all  top-0 l-0 w-full overflow-auto h-screen py-6 z-40">
+      <div class="language-list__container container mx-auto px-4"><button type="button"
+          class="language-close _icon-close text-xl dark:text-white text-black absolute right-5 top-24"></button>
+        <ul class="md:columns-4 sm:columns-2 columns-1 pt-24 overflow-auto">
+          <li class="market-item" style="cursor: pointer;"><span>English</span></li>
+          <li class="market-item" style="cursor: pointer;"><span>Русский</span></li>
+          <li class="market-item" style="cursor: pointer;"><span>Azerbaijani</span></li>
+          <li class="market-item" style="cursor: pointer;"><span>Français</span></li>
+          <li class="market-item" style="cursor: pointer;"><span>Bahasa Indonesia</span></li>
+          <li class="market-item" style="cursor: pointer;"><span>Italiano</span></li>
+          <li class="market-item" style="cursor: pointer;"><span>日本語</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+    class="theme-settings fixed top-0 right-0 w-full overflow-auto py-6 pt-28 z-40 transition-all flex justify-center">
+   <div class="container mx-auto px-4 flex items-end justify-end">
+    <div class="color-picker-panel max-w-[17rem] relative h-max rounded-lg">
+      <div class="relative m-3">
+        <div class="swatches default-swatches"></div>
+      </div>
+      <div class="relative mx-3 mb-3">
+        <div class="spectrum-map mr-8">
+          <button id="spectrum-cursor" class="color-cursor"></button>
+          <canvas id="spectrum-canvas"></canvas>
+        </div>
+        <div class="hue-map absolute right-2 top-1.5 bottom-1.5 w-[.625rem]">
+          <button id="hue-cursor" class="color-cursor"></button>
+          <canvas id="hue-canvas"></canvas>
+        </div>
+      </div>
+      <div class="mb-3">
+        <h2 class="text-center dark:text-dark-white text-light-black">User Colors</h2>
+        <div id="user-swatches" class="swatches custom-swatches">
+        </div>
+        <button id="add-swatch" class="button add-swatch dark:text-dark-white text-light-black">
+          <span id="color-indicator" class="color-indicator"></span><span>Add to Swatches</span>
+        </button>
+      </div>
+    </div>
+   </div>
+
+
+  </div>
+    <!-- /.theme-settings -->
+    <main class="page">
+      <section class="hero flex items-center justify-center py-28 pt-32 min-h-[60vh] relative ">
+        <div class="hero__backgrounds">
+          <div class="hero__circle circle-1">
+
+          </div>
+          <div class="hero__circle circle-2">
+
+          </div>
+          <div class="hero__circle circle-3">
+
+          </div>
+        </div>
+        <div class="flex flex-col items-center text-center max-w-3xl mx-auto relative z-10">
+          <h1 class="font-medium md:text-5xl text-4xl leading-tight dark:text-dark-white text-light-black mb-5">Stake
+            MansaTrade tokens and boost your earnings</h1>
+          <p class="dark:text-dark-text-gray text-light-text-light text-lg leading-tight mb-8">Up to 8% annual yield,
+            exclusive access to new platform features, and much more</p><a href="" target="_blank"
+            class="button button-main button-lg min-w-[9rem]">Buy MNS</a>
+        </div>
+      </section>
+      <section class="features pt-10 md:pb-28 pb-20 -mt-20 relative z-10">
+        <div class="container mx-auto px-4">
+          <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 lg:gap-5 gap-4">
+            <div class="features__card card">
+              <div class="card__body">
+                <div class="card__icon"></div>
+                <div class="card__text">
+                  <div class="dark:text-dark-text-light md:text-lg text-base min-h-14 text-center">
+                    <p>Only 25 000 000 tokens</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="features__card card">
+              <div class="card__body">
+                <div class="card__icon"></div>
+                <div class="card__text">
+                  <div class="dark:text-dark-text-light md:text-lg text-base min-h-14 text-center">
+                    <p>Discounts and bonuses for token holders</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="features__card card">
+              <div class="card__body">
+                <div class="card__icon"></div>
+                <div class="card__text">
+                  <div class="dark:text-dark-text-light md:text-lg text-base min-h-14 text-center">
+                    <p>Access to new platform features</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="features__card transition-colors card">
+              <div class="card__body">
+                <div class="card__icon"></div>
+                <div class="card__text">
+                  <div class="dark:text-dark-text-light md:text-lg text-base min-h-14 text-center">
+                    <p>Full control over assets</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="tariffs relative overflow-hidden md:py-28 py-20 !pb-0" data-watch="" data-watch-once=""
+        id="tariffs">
+        <div class="tariffs__bg">
+          <div class="tariffs__shadow shadow-1">
+
+          </div>
+          <div class="tariffs__shadow shadow-2">
+
+          </div>
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+          <div class="text-center mb-9">
+            <h2
+              class="dark:text-dark-white text-light-black md:text-3xl text-2xl h2 mb-6 text-center md:max-w-[80%] mx-auto">
+              6 tariffs to choose from: for beginners, advanced users, and real experts</h2>
+            <p class="dark:text-dark-text-gray text-light-text-gray text-lg leading-6">Choose the optimal tariff and
+              stake your assets to maximize profits.</p>
+          </div>
+          <div data-tabs="" class="tabs flex items-center flex-col mb-16">
+            <nav data-tabs-titles="" class="tabs__navigation inline-flex items-center gap-1 p-1.5"><button type="button"
+                class="tabs__title _tab-active _icon-mns flex items-center rounded-md text-xl gap-3 opacity-60 text-center transition-all leading-6 md:py-2 md:px-5 py-1 px-4 min-h-11">Stake
+                MNS</button><button type="button"
+                class="tabs__title _icon-solana flex items-center rounded-md text-xl gap-3 opacity-60 text-center transition-all leading-6 md:py-2 md:px-5 py-1 px-4 min-h-11">Stake
+                SOL</button></nav>
+            <div data-tabs-body="" class="w-full mt-10">
+              <div>
+                <div class="grid lg:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-2 mb-12">
+                  <div class="options__item"><input id="63072000" type="radio" name="option" value="8" checked=""><label
+                      for="63072000">
+                      <div class="tariffs__tariff tariff">
+                        <div class="tariff__counter mb-4">
+                          <p><span class="text-4xl">730</span>days</p>
+                        </div>
+                        <div class="tariff__profitability">
+                          <p>Projected yield:</p><b>APY 8%</b>
+                        </div>
+                      </div>
+                    </label></div>
+                  <div class="options__item"><input id="31536000" type="radio" name="option" value="6"><label
+                      for="31536000">
+                      <div class="tariffs__tariff tariff">
+                        <div class="tariff__counter mb-4">
+                          <p><span class="text-4xl">365</span>days</p>
+                        </div>
+                        <div class="tariff__profitability">
+                          <p>Projected yield:</p><b>APY 6%</b>
+                        </div>
+                      </div>
+                    </label></div>
+                  <div class="options__item"><input id="23328000" type="radio" name="option" value="5"><label
+                      for="23328000">
+                      <div class="tariffs__tariff tariff">
+                        <div class="tariff__counter mb-4">
+                          <p><span class="text-4xl">270</span>days</p>
+                        </div>
+                        <div class="tariff__profitability">
+                          <p>Projected yield:</p><b>APY 5%</b>
+                        </div>
+                      </div>
+                    </label></div>
+                  <div class="options__item"><input id="15552000" type="radio" name="option" value="4.5"><label
+                      for="15552000">
+                      <div class="tariffs__tariff tariff">
+                        <div class="tariff__counter mb-4">
+                          <p><span class="text-4xl">180</span>days</p>
+                        </div>
+                        <div class="tariff__profitability">
+                          <p>Projected yield:</p><b>APY 4.5%</b>
+                        </div>
+                      </div>
+                    </label></div>
+                  <div class="options__item"><input id="7776000" type="radio" name="option" value="4"><label
+                      for="7776000">
+                      <div class="tariffs__tariff tariff">
+                        <div class="tariff__counter mb-4">
+                          <p><span class="text-4xl">90</span>days</p>
+                        </div>
+                        <div class="tariff__profitability">
+                          <p>Projected yield:</p><b>APY 4%</b>
+                        </div>
+                      </div>
+                    </label></div>
+                  <div class="options__item"><input id="2592000" type="radio" name="option" value="3"><label
+                      for="2592000">
+                      <div class="tariffs__tariff tariff">
+                        <div class="tariff__counter mb-4">
+                          <p><span class="text-4xl">30</span>days</p>
+                        </div>
+                        <div class="tariff__profitability">
+                          <p>Projected yield:</p><b>APY 3%</b>
+                        </div>
+                      </div>
+                    </label></div>
+                </div>
+                <div class="tariffs-check">
+                  <div class="tariffs-check__block relative max-w-[33.76rem] mx-auto rounded-2xl"><input
+                      autocomplete="off" type="number" class="input input-stacking" value="0"><button type="button"
+                      class="button button-main button-lg">Connect wallet</button> <span
+                      class="my-2 opacity-70 text-md block">Balance: 0 MNS</span></div>
+
+                </div>
+              </div>
+              <div>
+                <div class="tariffs-check mt-10 max-w-[33.75rem] mx-auto">
+                  <div class="flex items-center gap-4 self-center justify-center" style="margin-bottom: 1rem;"><img
+                      src="https://mnstrd.co/token/mns/mns.png" alt="validator"
+                      style="width: 1.7rem; height: 1.7rem; border-radius: 50%;"><span
+                      class="dark:text-dark-text-gray text-light-text-gray text-lg leading-6">Mansa</span><span
+                      class="dark:text-dark-text-gray text-light-text-gray text-lg leading-6"><b class="font-semibold">≈
+                        APY 7.5%</b></span></div>
+                  <div class="tariffs-check__block relative rounded-2xl"><input autocomplete="off" type="number"
+                      class="input input-stacking" value="0"><button type="button"
+                      class="button button-main button-lg">Connect wallet</button></div><span
+                    style="margin: 0.5rem auto; display: block; width: 100%; max-width: 33.75rem; color: var(--text-dark-gray);">Balance:
+                    0 SOL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+      <section class="calculator md:py-20 py-10" id="calculator">
+        <div class="container mx-auto px-4">
+          <div class="calculator__block rounded-3xl sm:px-10 px-4 py-10">
+            <h2 class="dark:text-dark-white text-light-black md:text-3xl text-2xl h2 text-center mb-12">Calculate future
+              profit</h2>
+            <div class="flex md:items-center gap-x-5 gap-y-4 md:flex-row flex-col">
+              <div class="grid sm:grid-cols-2 grid-cols-1 gap-2 w-full">
+                <div><label for="#countStaking"
+                    class="dark:text-dark-white text-light-black block mb-1 font-semibold md:text-[.6875rem] text-[.5625rem] leading-4 uppercase">Amount
+                    of MNS tokens</label><input autocomplete="off" type="text" id="countStaking" name="countStaking"
+                    placeholder="Value" class="input" value="100"></div>
+                <div><label for="#deadlineStaking"
+                    class="dark:text-dark-white text-light-black block mb-1 font-semibold md:text-[.6875rem] text-[.5625rem] leading-4 uppercase">Staking
+                    period</label><select class="custom-select dark:text-white">
+                    <option value="63072000">730 days</option>
+                    <option value="31536000">365 days</option>
+                    <option value="23328000">270 days</option>
+                    <option value="15552000">180 days</option>
+                    <option value="7776000">90 days</option>
+                    <option value="2592000">30 days</option>
+                  </select></div>
+              </div>
+              <div><label
+                  class="dark:text-dark-white text-light-black block mb-1 font-semibold md:text-[.6875rem] text-[.5625rem] leading-4 uppercase">Total
+                  return</label>
+                <div id="result"
+                  class="text-dark-white bg-[var(--color-ms-main-700)] font-medium gap-3 text-2xl lg:min-w-80 md:min-w-60 px-3 py-2 min-h-[3.75rem] rounded-xl flex items-center">
+                  <span>116</span><i class="_icon-mns text-xl"></i>MNS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="why-us md:py-28 py-20 relative" id="why-us">
+        <div class="absolute right-0 bottom-0 text-[var(--color-ms-main-300)] z-10 md:max-w-[31.25rem] max-w-[12.5rem]">
+          <svg width="416" height="444" viewBox="0 0 416 444" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.08" fill-rule="evenodd" clip-rule="evenodd" d="M240.875 615.746C389.471 695.311 562.783 640.474 631.69 504.818C700.597 369.163 645.201 191.864 496.604 112.299C348.007 32.7335 174.696 87.5709 105.789 223.227C36.8815 358.882 92.278 536.18 240.875 615.746ZM208.043 680.381C388.035 776.757 605.894 713.247 694.644 538.527C783.394 363.807 709.428 144.04 529.436 47.6636C349.443 -48.7125 131.584 14.7978 42.8343 189.518C-45.916 364.238 28.0504 584.005 208.043 680.381Z" fill="currentColor"></path><path opacity="0.08" fill-rule="evenodd" clip-rule="evenodd" d="M262.68 572.818C382.909 637.194 526.686 594.13 584.805 479.713C642.924 365.295 595.028 219.601 474.799 155.224C354.57 90.8479 210.793 133.912 152.674 248.33C94.5545 362.747 142.45 508.442 262.68 572.818ZM253.924 590.054C382.526 658.913 538.182 613.536 601.593 488.702C665.004 363.867 612.156 206.847 483.554 137.988C354.953 69.129 199.296 114.506 135.886 239.341C72.4752 364.175 125.323 521.195 253.924 590.054Z" fill="currentColor"></path></svg>
+        </div>
+        <div class="container mx-auto px-4 relative z-20">
+          <h2
+            class="dark:text-dark-white text-light-black md:text-3xl lg:max-w-[58%] md:max-w-[36rem] sm:max-w-[30rem] mx-auto text-2xl h2 text-center md:mb-16 mb-12">
+            6 reasons to stake cryptocurrency with Mansa Trade</h2>
+          <div class="grid md:grid-cols-2 grid-cols-1 md:gap-8 gap-3">
+            <div class="card">
+              <div
+                class="w-14 h-14 mb-3 rounded-xl bg-[rgba(70,195,234,0.15)] _icon-coin-1 inline-flex items-center justify-center text-[rgb(70,195,234)] text-xl">
+              </div>
+              <div class="card__content">
+                <h6 class="text-xl font-medium mb-3">High profitability</h6>
+                <p class="text-lg opacity-70">The interest rate ranges from 3% to 8% annually — start staking and
+                  receive increased passive income.
+                </p>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="w-14 h-14 rounded-xl mb-3 bg-[rgba(220,194,75,0.15)] _icon-phone inline-flex items-center justify-center text-[#DCC24B] text-xl">
+              </div>
+              <div class="card__content">
+                <h6 class="text-xl font-medium mb-3">Mobile application</h6>
+                <p class="text-lg opacity-70">Conduct transactions and manage assets directly from your smartphone.
+                  Connect your crypto wallet and
+                  track transactions using the notification system.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="w-14 h-14 rounded-xl mb-3 bg-[rgba(126,94,255,0.15)] _icon-shield-check inline-flex items-center justify-center text-[#7E5EFF] text-xl">
+              </div>
+              <div class="card__content">
+                <h6 class="text-xl font-medium mb-3">Security</h6>
+                <p class="text-lg opacity-70">Only token owners have the right to reclaim them, eliminating the
+                  possibility of unauthorized access
+                  and ensuring the safe management of digital assets.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="w-14 h-14 rounded-xl mb-3 bg-[rgba(62,209,103,0.15)] _icon-gem inline-flex items-center justify-center text-[#3ED182] text-xl">
+              </div>
+              <div class="card__content">
+                <h6 class="text-xl font-medium mb-3">Numerous bonuses</h6>
+                <p class="text-lg opacity-70">Opportunities to participate in developing the Mansa Trade platform,
+                  discounts, and promotions for
+                  token holders, as well as fast and secure withdrawal of funds to a card or wallet.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="w-14 h-14 rounded-xl mb-3 bg-[rgba(219,83,148,0.15)] _icon-boxes inline-flex items-center justify-center text-[#DB5394] text-xl">
+              </div>
+              <div class="card__content">
+                <h6 class="text-xl font-medium mb-3">Five blockchain networks</h6>
+                <p class="text-lg opacity-70">The platform supports Solana, Ethereum, Polygon, Binance Smart Chain
+                  (BNB), and Avalanche network
+                  operations.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="w-14 h-14 rounded-xl mb-3 bg-[rgba(246,124,56,0.15)] _icon-chat-text inline-flex items-center justify-center text-[#F67C38] text-xl">
+              </div>
+              <div class="card__content">
+                <h6 class="text-xl font-medium mb-3">24/7 support</h6>
+                <p class="text-lg opacity-70">Our specialists are always available and ready to provide free
+                  consultation and answer any questions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="faq md:py-28 py-20 pb-5 relative z-10" id="faq">
+        <div class="container px-4 mx-auto">
+          <div class="block relative z-10 md:py-28 py-20">
+            <h2
+              class="dark:text-dark-white text-light-black md:text-3xl text-2xl h2 text-center md:mb-16 mb-12 lg:max-w-full sm:max-w-[80%] mx-auto">
+              Everything you wanted to know about staking — is here</h2>
+            <div data-spollers="" data-one-spoller="" class="max-w-[43.75rem] md:mx-auto mx-4 mb-10">
+              <details class="spollers__item">
+                <summary>How to start cryptocurrency staking?</summary>
+                <div>
+                  <p>How to start cryptocurrency staking in 3 steps:</p>
+                  <ul>
+                    <li>Connect your wallet.</li>
+                    <li>Buy or transfer tokens and choose the appropriate tariff.</li>
+                    <li>Accumulate profits and claim rewards at the end of the term.</li>
+                  </ul>
+                </div>
+              </details>
+              <details class="spollers__item">
+                <summary>How to get tokens?</summary>
+                <div>
+                  <p>Coins are issued as rewards for cryptocurrency staking and other operations. They are also
+                    available
+                    for purchase — acquire tokens at a favorable rate and store them Mansa Staking, earning from 3% to
+                    8%
+                    annual returns.</p>
+                </div>
+              </details>
+              <details class="spollers__item">
+                <summary>Which coins can be staked?</summary>
+                <div>
+                  <p>We support cryptocurrencies based on the Solana blockchain — MansaTrade &amp; SOL. Choose what you
+                    consider most profitable.</p>
+                </div>
+              </details>
+              <details class="spollers__item">
+                <summary>What if the token doesn't increase in price?</summary>
+                <div>
+                  <p>We actively improve the platform's capabilities and expand the network — according to internal
+                    forecasts, the MansaTrade token will increase in price over the next few years.</p>
+                </div>
+              </details>
+              <details class="spollers__item">
+                <summary>Can I withdraw savings before the term ends?</summary>
+                <div>
+                  <p>Fixed staking does not imply the possibility of token withdrawal but allows you to earn many times
+                    more.</p>
+                </div>
+              </details>
+            </div>
+            <div class="flex justify-center"><a href="#"
+                class="button button-main sm:min-w-56 sm:max-w-[15rem] sm:min-w-0 justify-center">24/7
+                support</a></div>
+          </div>
+        </div>
+      </section>
+      <section class="banner relative z-20 md:mb-28 mb-20">
+        <div class="container px-4 mx-auto">
+          <div class="banner-block rounded-2xl relative">
+            <div class="banner-wrap sm:p-10 py-9 px-4 relative z-10">
+              <h2
+                class="dark:text-dark-white font-medium text-light-black md:text-[2.5rem] text-2xl h2  sm:max-w-[70%] sm:mb-0 mb-4">
+                Join the
+                Mansa Trade ecosystem and increase your profit</h2>
+
+              <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+                <p class="dark:text-dark-text-gray text-light-text-gray text-base leading-6 max-w-[28.125rem]">
+                  Earn and hold MansaTrade tokens to leverage all platform opportunities and multiply your income.
+                  Staking
+                  will allow you to actively participate in developing the decentralized exchange and maximize the
+                  benefits of trading. </p>
+                <div>
+                  <p class="dark:text-dark-white text-light-black text-lg leading-6 mb-12 max-w-[28.125rem]">
+                    <strong>Start right now</strong> — freeze some of your funds in a crypto wallet and secure a decent
+                    passive income.
+                  </p>
+                  <a href="#"
+                    class="button button-main button-lg md:max-w-[11.875rem] sm:max-w-[15rem] max-w-full">Start
+                    staking</a>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer bg-footer-bg">
+      <div class="container mx-auto px-4">
+        <div class="logo-mob md:none flex items-center justify-center pt-10"></div>
+        <div class="grid grid-cols-2 md:gap-4 gap-7 py-10">
+          <div class="flex gap-4 md:justify-between md:items-start h-full"><a href="#" class="header__logo dark:text-dark-white text-light-black">
+            <div class="light">
+              <img src="https://mnstrd.co/common/assets/img/logo-light-mansa.trade.svg" alt="Logo">
+
+            </div>
+            <div class="dark">
+              <img src="https://mnstrd.co/common/assets/img/logo-mansa.trade.svg" alt="Logo">
+
+            </div>
+            <span>STAKING</span>
+          </a>
+            <div class="menu md:w-auto w-full">
+              <nav
+                class="flex md:justify-center md:tems-center h-full flex-col pr-12 border-2 border-transparent border-r-footer-stroke">
+                <ul class="flex lg:gap-x-8 gap-y-5 flex-col pl-0 list-none">
+                  <li><a class="text-sm dark:text-footer-text text-light-black font-medium transitions-colors hover:text-[var(--color-ms-main-400)]"
+                      href="/#tariffs">Tariffs</a></li>
+                  <li><a class="text-sm dark:text-footer-text text-light-black font-medium transitions-colors hover:text-[var(--color-ms-main-400)]"
+                      href="/#calculator">Calculator</a></li>
+                  <li><a class="text-sm dark:text-footer-text text-light-black font-medium transitions-colors hover:text-[var(--color-ms-main-400)]"
+                      href="/#why-us">Advantage</a></li>
+                  <li><a class="text-sm dark:text-footer-text text-light-black font-medium transitions-colors hover:text-[var(--color-ms-main-400)]"
+                      href="/#faq">FAQ</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="flex md:gap-x-32 gap-4 md:justify-end md:items-start md:flex-row flex-col">
+            <nav class="flex md:justify-center md:items-center flex-col">
+              <ul class="flex lg:gap-x-8 gap-y-4 flex-col pl-0 list-none">
+                <li><a target="_blank" href="https://mansa.trade" class="link-footer">P2P Dex</a></li>
+                <li><a href="#" class="link-footer">Support Portal</a></li>
+                <li><a target="_blank" href="https://mansa.wiki" class="link-footer">Wiki</a></li>
+                <li><a href="#" class="link-footer">Litepaper</a></li>
+              </ul>
+            </nav>
+            <nav class="flex md:justify-center md:items-center flex-col">
+              <ul class="flex lg:gap-x-8 gap-y-4 flex-col pl-0 list-none">
+                <li><a href="#" class="link-footer">API</a></li>
+                <li><a href="#" class="link-footer">Сoingecko</a></li>
+                <li><a target="_blank" href="https://coinmarketcap.com/currencies/solanacash/"
+                    class="link-footer">CoinMarketCap</a></li>
+                <li><a target="_blank" href="https://solscan.io/token/MNSTRDvrtET2pesY6oBadd8qWXKVdcVyxWKf4CgUV3B"
+                    class="link-footer">solscan</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div
+          class="flex items-center gap-4 justify-between py-5 border-2 border-transparent border-t-footer-stroke flex-wrap md:flex-row flex-col-reverse items-center">
+          <div class="flex md:items-end md:gap-7 gap-4 md:flex-row flex-col-reverse items-center">
+            <p class="dark:text-footer-text text-light-black opacity-50 text-sm">© Copyright 2024</p>
+            <ul class="list-none pl-0 flex items-center gap-4 sm:flex-no-wrap flex-wrap justify-center">
+              <li><a href="#"
+                  class="underline  underline-offset-4 text-xs dark:text-footer-text text-light-black opacity-50 transition-all hover:no-underline">Terms
+                  &amp; Conditions</a></li>
+              <li><a href="#"
+                  class="underline underline-offset-4 text-xs dark:text-footer-text text-light-black opacity-50 transition-all hover:no-underline">Privacy
+                  policy</a></li>
+              <li><a href="#"
+                  class="underline  underline-offset-4 text-xs dark:text-footer-text text-light-black opacity-50 transition-all hover:no-underline">Cookie
+                  policy</a></li>
+            </ul>
+          </div>
+          <div class="socials">
+            <ul class="list-none pl-0 flex items-center gap-4 flex-wrap md:justify-end justify-center">
+              <li><a href="https://mansa.blog" target="_blank"
+                  class="_icon-medium dark:text-footer-text text-light-black text-xl opacity-50 hover:opacity-100 transition-all hover:text-[var(--color-ms-main-400)]"></a>
+              </li>
+              <li><a href="https://x.com/Mansa_Trade" target="_blank"
+                  class="_icon-twitter-x dark:text-footer-text text-light-black text-xl opacity-50 hover:opacity-100 transition-all hover:text-[var(--color-ms-main-400)]"></a>
+              </li>
+              <li><a href="https://github.com/Mansa-Trade" target="_blank"
+                  class="_icon-github dark:text-footer-text text-light-black text-xl opacity-50 hover:opacity-100 transition-all hover:text-[var(--color-ms-main-400)]"></a>
+              </li>
+              <li><a href="https://www.reddit.com/r/Mansa_Trade/" target="_blank"
+                  class="_icon-reddit dark:text-footer-text text-light-black text-xl opacity-50 hover:opacity-100 transition-all hover:text-[var(--color-ms-main-400)]"></a>
+              </li>
+              <li><a href="https://t.me/MansaTrade" target="_blank"
+                  class="_icon-telegram dark:text-footer-text text-light-black text-xl opacity-50 hover:opacity-100 transition-all hover:text-[var(--color-ms-main-400)]"></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Main JS Script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.3.0/tinycolor.min.js"></script>
+  <script src="./js/scripts.js"></script>
+</body>
+
+</html>
